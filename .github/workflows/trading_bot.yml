@@ -1,0 +1,42 @@
+name: XAUUSD Quant Bot Execution Engine
+
+on:
+  schedule:
+    # Dijalankan setiap 15 menit (sesuai timeframe M15) dari Senin - Jumat
+    - cron: '*/15 * * * 1-5'
+  workflow_dispatch: # Memungkinkan eksekusi manual via dashboard GitHub
+
+jobs:
+  run-quant-bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Execute XAUUSD Quant Bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GH_GIST_TOKEN: ${{ secrets.GH_GIST_TOKEN }}
+          GH_GIST_ID: ${{ secrets.GH_GIST_ID }}
+          TWELVE_DATA_KEY: ${{ secrets.TWELVE_DATA_KEY }}
+          GOLD_API_KEY: ${{ secrets.GOLD_API_KEY }}
+          OANDA_API_KEY: ${{ secrets.OANDA_API_KEY }}
+          ACCOUNT_EQUITY: ${{ secrets.ACCOUNT_EQUITY }}
+          RISK_PERCENT: ${{ secrets.RISK_PERCENT }}
+          BACKTEST_MODE: "false"
+        run: |
+          python bot.py
