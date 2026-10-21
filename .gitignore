@@ -1,0 +1,23 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+venv/
+ENV/
+
+# Local Model & State Caches
+.xauusd_model_v30.pkl
+.xauusd_state_v30.json
+.xauusd_state_v30.lock
+.xauusd_audit.jsonl
+.xauusd_kill_switch
+*.tmp*
+
+# IDE & System Files
+.vscode/
+.idea/
+.DS_Store
